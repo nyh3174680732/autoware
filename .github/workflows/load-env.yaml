@@ -22,7 +22,7 @@ jobs:
       autoware_base_cuda_image: ${{ steps.set-env.outputs.autoware_base_cuda_image }}
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Load env
         run: |
