@@ -10,6 +10,13 @@
 build/
 install/
 log/
+src/autoware_map/*
+!src/autoware_map/gazebo_map/
+src/awsim_labs_v1.6.1
+src/FAST-LIVO2-ROS2-MID360-Fisheye
+src/pc_utm_to_mgrs_converter
+src/ws_livox
+src/yunle_vehicle
 
 # Python
 *.pyc
