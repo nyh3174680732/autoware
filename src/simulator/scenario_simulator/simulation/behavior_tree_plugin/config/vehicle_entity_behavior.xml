@@ -1,0 +1,21 @@
+<root>
+    <BehaviorTree>
+    <Fallback name="root">
+        <LaneChange name="lane_change" />
+        <Fallback name="follow_trajectory_sequence">
+          <FollowPolylineTrajectory name="follow_polyline_trajectory" />
+        </Fallback>
+        <Fallback name="follow_lane_sequence">
+            <FollowLane name="follow_lane" />
+            <Fallback name="follow_lane_behavior_selector">
+                <FollowFrontEntity name="follow_front_entity" />
+                <StopAtTrafficLight name="stop_at_traffic_light" />
+                <StopAtStopLine name="stop_at_stop_line" />
+                <StopAtCrossingEntity name="stop_at_crossing_entity" />
+                <Yield name="yield" />
+                <MoveBackward name="move_backward" />
+            </Fallback>
+        </Fallback>
+    </Fallback>
+    </BehaviorTree>
+</root>

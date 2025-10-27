@@ -1,0 +1,185 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Parameters for the Motion Velocity Planner",
+  "type": "object",
+  "definitions": {
+    "motion_velocity_planner": {
+      "type": "object",
+      "properties": {
+        "smooth_velocity_before_planning": {
+          "type": "boolean",
+          "default": true,
+          "description": "if true, smooth the velocity profile of the input trajectory before planning"
+        },
+        "trajectory_polygon_collision_check": {
+          "type": "object",
+          "properties": {
+            "decimate_trajectory_step_length": {
+              "type": "number",
+              "default": 2.0,
+              "description": "trajectory's step length to decimate for the polygon-based collision check"
+            },
+            "goal_extended_trajectory_length": {
+              "type": "number",
+              "default": 6.0,
+              "description": "trajectory's extended length on the goal for the polygon-based collision check"
+            },
+            "consider_current_pose": {
+              "type": "object",
+              "properties": {
+                "enable_to_consider_current_pose": {
+                  "type": "boolean",
+                  "default": true,
+                  "description": "whether to consider the current pose to create the trajectory polygon for the polygon-based collision check"
+                },
+                "time_to_convergence": {
+                  "type": "number",
+                  "default": 1.5,
+                  "description": "time for the ego to converge to the trajectory for the polygon-based collision check"
+                }
+              },
+              "required": ["enable_to_consider_current_pose", "time_to_convergence"]
+            }
+          },
+          "required": ["decimate_trajectory_step_length", "goal_extended_trajectory_length"]
+        },
+        "pointcloud": {
+          "type": "object",
+          "properties": {
+            "mask_lat_margin": {
+              "type": "number",
+              "default": 2.0,
+              "description": "lat margin from the input trajectory to mask-out pointcloud points [m]"
+            }
+          }
+        },
+        "pointcloud_preprocessing": {
+          "type": "object",
+          "properties": {
+            "filter_by_trajectory_polygon": {
+              "type": "object",
+              "properties": {
+                "enable_monolithic_crop_box": {
+                  "type": "boolean",
+                  "default": false,
+                  "description": "if true, crop pointcloud using monolithic trajectory polygon"
+                },
+                "enable_multi_polygon_filtering": {
+                  "type": "boolean",
+                  "default": true,
+                  "description": "if true, filter pointcloud using multi trajectory polygons"
+                },
+                "min_trajectory_length": {
+                  "type": "number",
+                  "default": 30.0,
+                  "description": "minimum trajectory length to crop pointcloud [m]"
+                },
+                "braking_distance_scale_factor": {
+                  "type": "number",
+                  "default": 1.5,
+                  "description": "scale factor for brake distance to crop pointcloud"
+                },
+                "lateral_margin": {
+                  "type": "number",
+                  "default": 2.0,
+                  "description": "lateral margin to mask pointcloud [m]"
+                },
+                "height_margin": {
+                  "type": "number",
+                  "default": 1.0,
+                  "description": "height margin to mask pointcloud [m]"
+                }
+              },
+              "required": [
+                "enable_monolithic_crop_box",
+                "enable_multi_polygon_filtering",
+                "min_trajectory_length",
+                "braking_distance_scale_factor",
+                "lateral_margin",
+                "height_margin"
+              ]
+            },
+            "downsample_by_voxel_grid": {
+              "type": "object",
+              "properties": {
+                "enable_downsample": {
+                  "type": "boolean",
+                  "default": true,
+                  "description": "if true, downsample"
+                },
+                "voxel_size_x": {
+                  "type": "number",
+                  "default": 0.05,
+                  "description": "voxel grid x parameter for filtering pointcloud [m]"
+                },
+                "voxel_size_y": {
+                  "type": "number",
+                  "default": 0.05,
+                  "description": "voxel grid y parameter for filtering pointcloud [m]"
+                },
+                "voxel_size_z": {
+                  "type": "number",
+                  "default": 100000.0,
+                  "description": "voxel grid z parameter for filtering pointcloud [m]"
+                }
+              },
+              "required": ["enable_downsample", "voxel_size_x", "voxel_size_y", "voxel_size_z"]
+            },
+            "euclidean_clustering": {
+              "type": "object",
+              "properties": {
+                "enable_clustering": {
+                  "type": "boolean",
+                  "default": true,
+                  "description": "if true, cluster pointcloud by euclidean distance"
+                },
+                "cluster_tolerance": {
+                  "type": "number",
+                  "default": 1.0,
+                  "description": "clustering tolerance [m]"
+                },
+                "min_cluster_size": {
+                  "type": "number",
+                  "default": 1,
+                  "description": "minimum number of points per cluster"
+                },
+                "max_cluster_size": {
+                  "type": "number",
+                  "default": 100000,
+                  "description": "maximum number of points per cluster"
+                }
+              },
+              "required": [
+                "enable_clustering",
+                "cluster_tolerance",
+                "min_cluster_size",
+                "max_cluster_size"
+              ]
+            }
+          },
+          "required": [
+            "filter_by_trajectory_polygon",
+            "downsample_by_voxel_grid",
+            "euclidean_clustering"
+          ]
+        }
+      },
+      "required": ["smooth_velocity_before_planning"],
+      "additionalProperties": false
+    }
+  },
+  "properties": {
+    "/**": {
+      "type": "object",
+      "properties": {
+        "ros__parameters": {
+          "$ref": "#/definitions/motion_velocity_planner"
+        }
+      },
+      "required": ["ros__parameters"],
+      "additionalProperties": false
+    }
+  },
+  "required": ["/**"],
+  "additionalProperties": false
+}

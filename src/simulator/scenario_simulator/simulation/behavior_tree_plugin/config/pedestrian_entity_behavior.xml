@@ -1,0 +1,11 @@
+<root>
+    <BehaviorTree>
+    <Fallback name="root">
+        <FollowLane name="follow_lane" />
+        <WalkStraightAction name="walk_straight" />
+        <Fallback name="follow_trajectory_sequence">
+            <FollowPolylineTrajectory name="follow_polyline_trajectory" />
+        </Fallback>
+    </Fallback>
+    </BehaviorTree>
+</root>

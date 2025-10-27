@@ -1,0 +1,3 @@
+string name
+traffic_simulator_msgs/EntitySubtype subtype
+traffic_simulator_msgs/BoundingBox bounding_box
