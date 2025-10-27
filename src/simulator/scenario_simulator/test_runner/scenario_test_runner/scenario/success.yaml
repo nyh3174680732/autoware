@@ -1,0 +1,106 @@
+ScenarioModifiers:
+  ScenarioModifier:
+    - name: INITIAL-VALUE
+      list: [1, 50, 102]
+      # list: [100]
+    - name: STEP
+      # list: [1, 2]
+      list: [1]
+OpenSCENARIO:
+  FileHeader:
+    revMajor: 1
+    revMinor: 0
+    date: "2020-03-20T12:00:00"
+    author: yamacir-kit
+    description: set
+  ParameterDeclarations:
+    ParameterDeclaration:
+      - name: value
+        parameterType: double
+        value: 0
+      - name: extension
+        parameterType: string
+        value: osm
+      - name: map-name
+        parameterType: string
+        value: "kashiwanoha_map"
+  CatalogLocations:
+  RoadNetwork:
+    LogicFile:
+      filepath: "$(find-pkg-share $(var map-name))/map/lanelet2_map.$(var extension)"
+    SceneGraphFile:
+      filepath: "$(dirname)/foo.txt"
+    TrafficSignals:
+  Entities:
+  Storyboard:
+    Init:
+      Actions:
+        GlobalAction:
+          ParameterAction:
+            parameterRef: value
+            SetAction:
+              value: INITIAL-VALUE
+        UserDefinedAction:
+          CustomCommandAction:
+            type: test(foo, "hello, world!", 3.14)
+    Story:
+      - name: story
+        Act:
+          - name: act
+            ManeuverGroup:
+              - name: maneuver-group
+                maximumExecutionCount: 1
+                Actors:
+                  selectTriggeringEntities: false
+                  EntityRef:
+                    - entityRef: foo
+                    - entityRef: bar
+                    - entityRef: baz
+                Maneuver:
+                  - name: maneuver
+                    Event:
+                      - name: event
+                        priority: overwrite
+                        maximumExecutionCount: 100
+                        Action:
+                          - name: action
+                            GlobalAction:
+                              ParameterAction:
+                                parameterRef: value
+                                ModifyAction:
+                                  Rule:
+                                    AddValue:
+                                      value: STEP
+                        StartTrigger:
+                          ConditionGroup:
+                            - Condition:
+                              - name: condition
+                                delay: 0
+                                conditionEdge: none
+                                ByValueCondition:
+                                  ParameterCondition:
+                                    parameterRef: value
+                                    rule: greaterThan
+                                    value: 0
+            StartTrigger:
+              ConditionGroup:
+                - Condition:
+                  - name: condition
+                    delay: 0
+                    conditionEdge: none
+                    ByValueCondition:
+                      ParameterCondition:
+                        parameterRef: value
+                        rule: equalTo
+                        value: INITIAL-VALUE
+    StopTrigger:
+      ConditionGroup:
+        - Condition:
+          - name: condition
+            delay: 0
+            conditionEdge: none
+            ByValueCondition:
+              ParameterCondition:
+                parameterRef: value
+                rule: greaterThan
+                value: 100

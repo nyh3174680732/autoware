@@ -1,0 +1,322 @@
+OpenSCENARIO:
+  FileHeader:
+    revMajor: 1
+    revMinor: 0
+    date: '2021-09-06T09:09:41.856Z'
+    description: ''
+    author: ''
+  ParameterDeclarations:
+    ParameterDeclaration: []
+  CatalogLocations:
+    VehicleCatalog:
+      Directory:
+        path: $(ros2 pkg prefix --share openscenario_experimental_catalog)/vehicle
+  RoadNetwork:
+    LogicFile:
+      filepath: $(find-pkg-share kashiwanoha_map)/map
+    TrafficSignals:
+      TrafficSignalController: []
+  Entities:
+    ScenarioObject:
+      - name: ego
+        CatalogReference:
+          catalogName: sample_vehicle
+          entryName: sample_vehicle
+        ObjectController:
+          Controller:
+            name: ''
+            Properties:
+              Property:
+                - name: isEgo
+                  value: 'true'
+      - name: barricade
+        MiscObject:
+          mass: 1.0
+          miscObjectCategory: obstacle
+          name: ''
+          BoundingBox:
+            Center:
+              x: 0
+              y: 0
+              z: 0
+            Dimensions:
+              width: 10
+              length: 1
+              height: 10
+          Properties:
+            Property: []
+  Storyboard:
+    Init:
+      Actions:
+        Private:
+          - entityRef: ego
+            PrivateAction:
+              - TeleportAction:
+                  Position:
+                    LanePosition:
+                      roadId: ''
+                      laneId: '34513'
+                      s: 0
+                      offset: 0
+                      Orientation: &ORIENTATION_ZERO
+                        type: relative
+                        h: 0
+                        p: 0
+                        r: 0
+              - RoutingAction:
+                  AcquirePositionAction:
+                    Position: &EGO_DESTINATION
+                      LanePosition:
+                        roadId: ''
+                        laneId: '34507'
+                        s: 50
+                        offset: 0
+                        Orientation: *ORIENTATION_ZERO
+          - entityRef: barricade
+            PrivateAction:
+              - TeleportAction:
+                  Position:
+                    LanePosition:
+                      roadId: ''
+                      laneId: 34513
+                      s: 20
+                      offset: 0
+                      Orientation: *ORIENTATION_ZERO
+    Story:
+      - name: ''
+        Act:
+          - name: _EndCondition
+            ManeuverGroup:
+              - maximumExecutionCount: 1
+                name: ''
+                Actors:
+                  selectTriggeringEntities: false
+                  EntityRef:
+                    - entityRef: ego
+                Maneuver:
+                  - name: ''
+                    Event:
+                      - name: ''
+                        priority: parallel
+                        StartTrigger:
+                          ConditionGroup:
+                            - Condition:
+                                - name: ''
+                                  delay: 0
+                                  conditionEdge: none
+                                  ByValueCondition:
+                                    SimulationTimeCondition:
+                                      value: 180
+                                      rule: greaterThan
+                            - Condition:
+                                - name: ''
+                                  delay: 0
+                                  conditionEdge: none
+                                  ByEntityCondition:
+                                    TriggeringEntities:
+                                      triggeringEntitiesRule: any
+                                      EntityRef:
+                                        - entityRef: ego
+                                    EntityCondition:
+                                      ReachPositionCondition:
+                                        Position: *EGO_DESTINATION
+                                        tolerance: 0.5
+                        Action:
+                          - name: ''
+                            UserDefinedAction:
+                              CustomCommandAction:
+                                type: exitFailure
+                      - name: ''
+                        priority: parallel
+                        StartTrigger:
+                          ConditionGroup:
+                            - Condition:
+                                - &COUNT_UP
+                                  name: ''
+                                  delay: 0
+                                  conditionEdge: none
+                                  ByValueCondition:
+                                    UserDefinedValueCondition:
+                                      name: /count_up # ros2 run openscenario_interpreter_example count_up
+                                      value: 100
+                                      rule: greaterThan
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP # 10
+
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP # 20
+
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP # 30
+
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP # 40
+
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP # 50
+
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP # 60
+
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP # 70
+
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP # 80
+
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP # 90
+
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP # 100
+
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP # 110
+
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP # 120
+
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP # 130
+
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP # 140
+
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP
+                                - *COUNT_UP # 150
+                        Action:
+                          - name: ''
+                            UserDefinedAction:
+                              CustomCommandAction:
+                                type: exitSuccess
+            StartTrigger:
+              ConditionGroup:
+                - Condition:
+                    - name: ''
+                      delay: 0
+                      conditionEdge: none
+                      ByValueCondition:
+                        SimulationTimeCondition:
+                          value: 0
+                          rule: greaterThan
+    StopTrigger:
+      ConditionGroup: []

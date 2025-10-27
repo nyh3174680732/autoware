@@ -1,0 +1,16 @@
+OpenSCENARIO:
+  FileHeader:
+    revMajor: 1
+    revMinor: 0
+    date: "2021-10-21T12:00:00"
+    description: ""
+    author: ""
+  Catalog:
+    name: all-in-one-controller
+    Controller:
+      - name: Autoware
+        Properties:
+          Property: []
+      - name: behavior_tree_plugin/VehicleBehaviorTree
+        Properties:
+          Property: []
