@@ -28479,7 +28479,7 @@
         </collision>
         <sensor name='velodyne_V16' type='ray'>
           <visualize>0</visualize>
-          <update_rate>10</update_rate>
+          <update_rate>30</update_rate>
           <ray>
             <scan>
               <horizontal>
@@ -28509,7 +28509,7 @@
           <plugin name='gazebo_ros_laser_controller' filename='libgazebo_ros_velodyne_laser.so'>
             <ros>
               <namespace>/velodyne_V16</namespace>
-              <update_rate>10</update_rate>
+              <!-- <update_rate>0</update_rate> -->
               <remapping>~/out:=/sensing/lidar/top/pointcloud_raw</remapping>
             </ros>
             <frame_name>velodyne_top_base_link</frame_name>

@@ -1,11 +1,11 @@
 /**:
-  ros__parameters:
+  ros__parameters: # 路径规划中的代价地图（costmap）配置
     costmap_frame: "map"
     vehicle_frame: "base_link"
     map_frame: "map"
     update_rate: 10.0
-    activate_by_scenario: False
-    grid_min_value: 0.0
+    activate_by_scenario: False # 代价地图始终处于激活状态
+    grid_min_value: 0.0 # 代价地图中网格的最低代价
     grid_max_value: 1.0
     grid_resolution: 0.3
     grid_length_x: 70.0

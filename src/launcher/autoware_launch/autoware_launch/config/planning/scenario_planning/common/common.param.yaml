@@ -1,12 +1,12 @@
 /**:
   ros__parameters:
-    max_vel: 4.17           # max velocity limit [m/s]
+    max_vel: 1.39           # max velocity limit [m/s] 最大速度限制
 
     # constraints param for normal driving
     normal:
-      min_acc: -1.0         # min deceleration [m/ss]
+      min_acc: -1.0         # min deceleration [m/ss] 
       max_acc: 1.0          # max acceleration [m/ss]
-      min_jerk: -1.0        # min jerk [m/sss]
+      min_jerk: -1.0        # min jerk [m/sss]  最小加加速度 限制加速度的变化率，防止加速或减速过于突然
       max_jerk: 1.0         # max jerk [m/sss]
 
     # constraints to be observed

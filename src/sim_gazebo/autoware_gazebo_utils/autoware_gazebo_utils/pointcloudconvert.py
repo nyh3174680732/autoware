@@ -115,10 +115,13 @@ class RawToRawEx(Node):
         for sub_topic, pub_topic in self.topics:
             sub = self.create_subscription(PointCloud2, sub_topic, self.make_callback(pub_topic), 10)
             self.subs.append(sub)
-            # qos = QoSProfile(depth=10, reliability=ReliabilityPolicy.BEST_EFFORT)
-            # self.pubs[pub_topic] = self.create_publisher(PointCloud2, pub_topic, qos)
             self.pubs[pub_topic] = self.create_publisher(PointCloud2, pub_topic, 10)
 
+        self.timer = self.create_timer(0.1, self.timer_callback) 
+            
+    def timer_callback(self):
+        self.get_logger().info('定时器回调被调用')
+        
     def make_callback(self, pub_topic):
         def callback(msg):
             points = []

@@ -2,10 +2,10 @@ launch:
   - arg:
       name: behavior_path_planner_type
       default: behavior_path_planner
-    # option: behavior_path_planner
-    #         path_generator
+    # option: behavior_path_planner 使用标准行为路径规划器
+    #         path_generator 使用路径生成器
 
-  # behavior path modules
+  # behavior path modules 负责路径规划的行为逻辑，决定车辆如何在道路上选择合适的路径
   - arg:
       name: launch_static_obstacle_avoidance #
       default: "true"
@@ -31,107 +31,107 @@ launch:
       name: launch_external_request_lane_change_left_module
       default: "false"
   - arg:
-      name: launch_goal_planner_module
+      name: launch_goal_planner_module # 是否启用目标点规划模块
       default: "true"
   - arg:
-      name: launch_start_planner_module
+      name: launch_start_planner_module # 是否启用起始点规划模块
       default: "true"
   - arg:
-      name: launch_side_shift_module
+      name: launch_side_shift_module #  是否启用侧向移动模块
       default: "true"
   - arg:
-      name: launch_bidirectional_traffic_module
+      name: launch_bidirectional_traffic_module #  是否启用双向交通模块
       default: "true"
 
-  # behavior velocity modules
+  # behavior velocity modules 负责根据道路环境（如行人、交通信号灯等）调整车辆速度
   - arg:
-      name: launch_crosswalk_module
-      default: "true"
-  - arg:
-      name: launch_walkway_module
-      default: "true"
-  - arg:
-      name: launch_traffic_light_module
-      default: "true"
-  - arg:
-      name: launch_intersection_module
-      default: "true"
-  - arg:
-      name: launch_merge_from_private_module
+      name: launch_crosswalk_module # 是否启用人行横道模块 车辆在接近人行横道时会减速或停车
       default: "false"
   - arg:
-      name: launch_blind_spot_module
-      default: "true"
-  - arg:
-      name: launch_detection_area_module
-      default: "true"
-  - arg:
-      name: launch_virtual_traffic_light_module
-      default: "true"
-  - arg:
-      name: launch_no_stopping_area_module
-      default: "true"
-  - arg:
-      name: launch_stop_line_module
-      default: "true"
-  - arg:
-      name: launch_occlusion_spot_module
+      name: launch_walkway_module # 是否启用人行道模块 检测并响应人行道上的行人
       default: "false"
   - arg:
-      name: launch_run_out_module
+      name: launch_traffic_light_module # 是否启用交通信号灯模块
       default: "false"
   - arg:
-      name: launch_speed_bump_module
+      name: launch_intersection_module # 是否启用交叉路口模块
       default: "false"
   - arg:
-      name: launch_no_drivable_lane_module
+      name: launch_merge_from_private_module # 是否启用私有道路并入模块
+      default: "false"
+  - arg:
+      name: launch_blind_spot_module # 是否启用盲区检测模块
+      default: "false"
+  - arg:
+      name: launch_detection_area_module # 是否启用检测区域模块
+      default: "true"
+  - arg:
+      name: launch_virtual_traffic_light_module # 是否启用虚拟交通信号灯模块
+      default: "false"
+  - arg:
+      name: launch_no_stopping_area_module # 是否启用禁止停车区域模块
+      default: "false"
+  - arg:
+      name: launch_stop_line_module # 是否启用停车线模块
+      default: "false"
+  - arg:
+      name: launch_occlusion_spot_module # 是否启用遮挡点模块
+      default: "false"
+  - arg:
+      name: launch_run_out_module # 是否启用驶出风险模块
+      default: "false"
+  - arg:
+      name: launch_speed_bump_module # 是否启用减速带模块
+      default: "false"
+  - arg:
+      name: launch_no_drivable_lane_module #  是否启用不可驾驶车道模块
       default: "false"
 
-  # motion planning modules
+  # motion planning modules 运动路径规划模块
   - arg:
-      name: motion_path_smoother_type
+      name: motion_path_smoother_type # 路径平滑器的类型
       default: elastic_band
       # option: elastic_band
       #         none
 
   - arg:
-      name: motion_path_planner_type
+      name: motion_path_planner_type # 路径规划器的类型
       default: path_optimizer
-      # option: path_optimizer
-      #         path_sampler
+      # option: path_optimizer 路径优化器
+      #         path_sampler 路径采样器
       #         none
 
   # motion velocity planner modules
   - arg:
-      name: launch_obstacle_stop_module
+      name: launch_obstacle_stop_module # 是否启用障碍物停车模块
       default: "true"
   - arg:
-      name: launch_obstacle_slow_down_module
+      name: launch_obstacle_slow_down_module # 是否启用障碍物减速模块
       default: "true"
   - arg:
-      name: launch_obstacle_cruise_module
+      name: launch_obstacle_cruise_module # 是否启用障碍物巡航模块
       default: "true"
   - arg:
-      name: launch_dynamic_obstacle_stop_module
+      name: launch_dynamic_obstacle_stop_module # 是否启用动态障碍物停车模块
       default: "true"
   - arg:
-      name: launch_out_of_lane_module
+      name: launch_out_of_lane_module # 是否启用车道偏离模块
       default: "true"
   - arg:
-      name: launch_obstacle_velocity_limiter_module
+      name: launch_obstacle_velocity_limiter_module #  是否启用障碍物速度限制模块
       default: "true"
   - arg:
-      name: launch_mvp_run_out_module
+      name: launch_mvp_run_out_module # 是否启用运动速度规划中的驶出风险模块
       default: "true"
   - arg:
-      name: launch_boundary_departure_prevention_module
+      name: launch_boundary_departure_prevention_module # 是否启用边界偏离预防模块
       default: "true"
   - arg:
-      name: launch_road_user_stop_module
+      name: launch_road_user_stop_module # 是否启用道路使用者停车模块
       default: "true"
 
   - arg:
-      name: velocity_smoother_type
+      name: velocity_smoother_type # 速度平滑器的类型
       default: JerkFiltered
       # option: JerkFiltered
       #         L2
@@ -144,15 +144,15 @@ launch:
 
   # parking modules
   - arg:
-      name: launch_parking_module
+      name: launch_parking_module # 是否启用停车模块
       default: "true"
 
   # validator modules
   - arg:
-      name: launch_latency_checker
+      name: launch_latency_checker # 是否启用延迟检查模块
       default: "true"
   - arg:
-      name: launch_trajectory_checker
+      name: launch_trajectory_checker # 是否启用轨迹检查模块
       default: "true"
   - arg:
       name: launch_intersection_collision_checker
