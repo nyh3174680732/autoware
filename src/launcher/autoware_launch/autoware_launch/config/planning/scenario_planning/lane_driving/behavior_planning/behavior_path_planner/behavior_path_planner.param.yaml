@@ -2,25 +2,25 @@
   ros__parameters:
     traffic_light_signal_timeout: 1.0
 
-    planning_hz: 10.0
-    backward_path_length: 5.0
-    forward_path_length: 300.0
-    backward_length_buffer_for_end_of_pull_over: 5.0
-    backward_length_buffer_for_end_of_pull_out: 5.0
-    minimum_pull_over_length: 16.0
+    planning_hz: 10.0 # 路径规划的频率，单位为 Hz（每秒的规划次数）
+    backward_path_length: 5.0 # 规划路径中向后延伸的长度，通常用于倒车或需要考虑后方障碍物的场景
+    forward_path_length: 300.0 # 规划路径中向前延伸的长度
+    backward_length_buffer_for_end_of_pull_over: 5.0 # 车辆靠边停车（pull-over）时，规划路径中额外向后预留的缓冲距离
+    backward_length_buffer_for_end_of_pull_out: 5.0 # 车辆从靠边位置驶出（pull-out）时，规划路径中额外向后预留的缓冲距离
+    minimum_pull_over_length: 16.0 # 靠边停车所需的最小路径长度
 
-    refine_goal_search_radius_range: 7.5
+    refine_goal_search_radius_range: 7.5 # 目标点优化时的搜索半径范围
 
     # parameters for turn signal decider
-    turn_signal_intersection_search_distance: 30.0
-    turn_signal_intersection_angle_threshold_deg: 15.0
-    turn_signal_minimum_search_distance: 10.0
-    turn_signal_search_time: 3.0
-    turn_signal_shift_length_threshold: 0.3
-    turn_signal_remaining_shift_length_threshold: 0.1
-    turn_signal_on_swerving: true
+    turn_signal_intersection_search_distance: 30.0 # 在路口附近检测是否需要打转向灯的搜索距离
+    turn_signal_intersection_angle_threshold_deg: 15.0 # 判断是否需要打转向灯的路口角度阈值
+    turn_signal_minimum_search_distance: 10.0 # 转向灯检测的最小搜索距离
+    turn_signal_search_time: 3.0 # 转向灯决策的搜索时间
+    turn_signal_shift_length_threshold: 0.3 # 转向灯触发的位移长度阈值 如果车辆的横向位移超过这个值，系统会触发转向灯
+    turn_signal_remaining_shift_length_threshold: 0.1 # # 转向灯关闭的剩余位移长度阈值 当车辆的剩余横向位移小于这个值时，系统会关闭转向灯
+    turn_signal_on_swerving: true # 是否在车辆发生急转弯时开启转向灯
 
-    enable_akima_spline_first: false
-    enable_cog_on_centerline: false
-    input_path_interval: 2.0
-    output_path_interval: 2.0
+    enable_akima_spline_first: false # 是否优先使用 Akima 样条曲线进行路径平滑
+    enable_cog_on_centerline: false # 是否将车辆的重心（COG，Center of Gravity）对齐到道路中心线
+    input_path_interval: 2.0 # 输入路径点之间的间隔 较小的间隔可以提高路径精度
+    output_path_interval: 2.0 # 输出路径点之间的间隔 较小的间隔可以生成更平滑的路径
