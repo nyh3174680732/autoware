@@ -45,8 +45,8 @@ PointcloudMapLoaderModule::PointcloudMapLoaderModule(
   const std::string & publisher_name, const bool use_downsample)
 : logger_(node->get_logger())
 {
-  rclcpp::QoS durable_qos{1};
-  durable_qos.transient_local();
+  rclcpp::QoS durable_qos{1}; //只保留最新的一条消息
+  durable_qos.transient_local(); //新订阅者能接收到最后发布的消息
   pub_pointcloud_map_ =
     node->create_publisher<sensor_msgs::msg::PointCloud2>(publisher_name, durable_qos);
 
@@ -57,12 +57,13 @@ PointcloudMapLoaderModule::PointcloudMapLoaderModule(
   } else {
     pcd = load_pcd_files(pcd_paths, boost::none);
   }
-
   if (pcd.width == 0) {
     RCLCPP_ERROR(logger_, "No PCD was loaded: pcd_paths.size() = %zu", pcd_paths.size());
     return;
   }
-
+  for(auto path : pcd_paths){
+    RCLCPP_INFO(logger_, "一起加载的地图路径是: %s", path.c_str());
+  }
   pcd.header.frame_id = "map";
   pub_pointcloud_map_->publish(pcd);
 }

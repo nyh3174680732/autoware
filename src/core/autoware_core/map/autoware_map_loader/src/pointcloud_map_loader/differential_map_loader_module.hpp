@@ -20,7 +20,7 @@
 #include <rclcpp/rclcpp.hpp>
 
 #include "autoware_map_msgs/srv/get_differential_point_cloud_map.hpp"
-
+#include "autoware_map_msgs/srv/get_new_differential_paths.hpp"
 #include <pcl/common/common.h>
 #include <pcl/filters/voxel_grid.h>
 #include <pcl/io/pcd_io.h>
@@ -37,7 +37,7 @@ namespace autoware::map_loader
 class DifferentialMapLoaderModule
 {
   using GetDifferentialPointCloudMap = autoware_map_msgs::srv::GetDifferentialPointCloudMap;
-
+  using GetNewDifferentialPaths = autoware_map_msgs::srv::GetNewDifferentialPaths;
 public:
   explicit DifferentialMapLoaderModule(
     rclcpp::Node * node, std::map<std::string, PCDFileMetadata> pcd_file_metadata_dict);
@@ -48,12 +48,25 @@ private:
   std::map<std::string, PCDFileMetadata> all_pcd_file_metadata_dict_;
   rclcpp::Service<GetDifferentialPointCloudMap>::SharedPtr get_differential_pcd_maps_service_;
 
+  rclcpp::Service<GetNewDifferentialPaths>::SharedPtr get_differential_pcd_paths_service_;
+
   [[nodiscard]] bool on_service_get_differential_point_cloud_map(
     GetDifferentialPointCloudMap::Request::SharedPtr req,
     GetDifferentialPointCloudMap::Response::SharedPtr res) const;
+
+
+  [[nodiscard]] bool on_service_get_differential_point_cloud_paths(
+    GetNewDifferentialPaths::Request::SharedPtr req,
+    GetNewDifferentialPaths::Response::SharedPtr res) const;
+
   void differential_area_load(
     const autoware_map_msgs::msg::AreaInfo & area_info, const std::vector<std::string> & cached_ids,
     const GetDifferentialPointCloudMap::Response::SharedPtr & response) const;
+    
+  void differential_paths_load(
+    const autoware_map_msgs::msg::AreaInfo & area_info, 
+    const GetNewDifferentialPaths::Response::SharedPtr & response) const;
+  
   [[nodiscard]] autoware_map_msgs::msg::PointCloudMapCellWithID load_point_cloud_map_cell_with_id(
     const std::string & path, const std::string & map_id) const;
 };

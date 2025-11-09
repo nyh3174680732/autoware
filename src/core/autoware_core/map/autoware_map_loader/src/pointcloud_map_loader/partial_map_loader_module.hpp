@@ -18,19 +18,19 @@
 #include "utils.hpp"
 
 #include <rclcpp/rclcpp.hpp>
-
 #include <autoware_map_msgs/srv/get_partial_point_cloud_map.hpp>
-
 #include <pcl/common/common.h>
 #include <pcl/filters/voxel_grid.h>
 #include <pcl/io/pcd_io.h>
 #include <pcl/point_cloud.h>
 #include <pcl/point_types.h>
 #include <pcl_conversions/pcl_conversions.h>
-
 #include <map>
 #include <string>
 #include <vector>
+
+#include <boost/optional.hpp>
+#include <sensor_msgs/msg/point_cloud2.hpp>  
 
 namespace autoware::map_loader
 {
@@ -48,6 +48,14 @@ private:
   std::map<std::string, PCDFileMetadata> all_pcd_file_metadata_dict_;
   rclcpp::Service<GetPartialPointCloudMap>::SharedPtr get_partial_pcd_maps_service_;
 
+  // 新增发布器
+  rclcpp::Publisher<sensor_msgs::msg::PointCloud2>::SharedPtr partial_map_pub_;
+  void timer_callback();
+  rclcpp::TimerBase::SharedPtr timer_;
+  mutable sensor_msgs::msg::PointCloud2 cached_pcd_;  // 缓存最新的点云
+  mutable bool has_data_;  // 标记是否有数据
+
+
   [[nodiscard]] bool on_service_get_partial_point_cloud_map(
     GetPartialPointCloudMap::Request::SharedPtr req,
     GetPartialPointCloudMap::Response::SharedPtr res) const;
@@ -56,6 +64,9 @@ private:
     const GetPartialPointCloudMap::Response::SharedPtr & response) const;
   [[nodiscard]] autoware_map_msgs::msg::PointCloudMapCellWithID load_point_cloud_map_cell_with_id(
     const std::string & path, const std::string & map_id) const;
+
+  [[nodiscard]] sensor_msgs::msg::PointCloud2 load_pcd_files(
+  const std::vector<std::string> & pcd_paths) const;
 };
 }  // namespace autoware::map_loader
 

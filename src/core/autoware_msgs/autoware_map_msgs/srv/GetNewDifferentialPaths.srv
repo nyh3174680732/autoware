@@ -1,0 +1,8 @@
+# Area query for map loading
+AreaInfo area
+
+---
+
+# Header
+std_msgs/Header header
+string[] new_paths

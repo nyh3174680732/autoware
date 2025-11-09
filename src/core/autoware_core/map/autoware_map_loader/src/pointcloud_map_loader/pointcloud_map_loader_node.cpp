@@ -48,8 +48,8 @@ PointCloudMapLoaderNode::PointCloudMapLoaderNode(const rclcpp::NodeOptions & opt
 : Node("pointcloud_map_loader", options)
 {
   const auto pcd_paths =
-    get_pcd_paths(declare_parameter<std::vector<std::string>>("pcd_paths_or_directory"));
-  std::string pcd_metadata_path = declare_parameter<std::string>("pcd_metadata_path");
+    get_pcd_paths(declare_parameter<std::vector<std::string>>("pcd_paths_or_directory")); // map_path/pointcloud_map.pcd
+  std::string pcd_metadata_path = declare_parameter<std::string>("pcd_metadata_path"); // map_path/pointcloud_map_metadata.yaml
   bool enable_whole_load = declare_parameter<bool>("enable_whole_load");
   bool enable_downsample_whole_load = declare_parameter<bool>("enable_downsampled_whole_load");
   bool enable_partial_load = declare_parameter<bool>("enable_partial_load");
@@ -69,9 +69,16 @@ PointCloudMapLoaderNode::PointCloudMapLoaderNode(const rclcpp::NodeOptions & opt
 
   // Parse the metadata file and get the map of (absolute pcd path, pcd file metadata)
   auto pcd_metadata_dict = get_pcd_metadata(pcd_metadata_path, pcd_paths);
-
+  // RCLCPP_INFO(this->get_logger(), "点云元数据字典:");
+  // for (const auto& [pcd_name, metadata] : pcd_metadata_dict) {
+  // RCLCPP_INFO(this->get_logger(), "  %s: min=[%.2f, %.2f, %.2f], max=[%.2f, %.2f, %.2f]", 
+  //             pcd_name.c_str(), 
+  //             metadata.min.x, metadata.min.y, metadata.min.z,
+  //             metadata.max.x, metadata.max.y, metadata.max.z);
+  // }
   if (enable_partial_load) {
     partial_map_loader_ = std::make_unique<PartialMapLoaderModule>(this, pcd_metadata_dict);
+    update_partial_map_ = std::make_unique<UpdatePartialMap>(this);
   }
 
   differential_map_loader_ = std::make_unique<DifferentialMapLoaderModule>(this, pcd_metadata_dict);
@@ -87,7 +94,6 @@ std::map<std::string, PCDFileMetadata> PointCloudMapLoaderNode::get_pcd_metadata
   if (fs::exists(pcd_metadata_path)) {
     std::set<std::string> missing_pcd_names;
     auto pcd_metadata_dict = load_pcd_metadata(pcd_metadata_path);
-
     pcd_metadata_dict = replace_with_absolute_path(pcd_metadata_dict, pcd_paths, missing_pcd_names);
 
     // Warning if some segments are missing
@@ -103,7 +109,6 @@ std::map<std::string, PCDFileMetadata> PointCloudMapLoaderNode::get_pcd_metadata
       RCLCPP_ERROR_STREAM(get_logger(), oss.str());
       throw std::runtime_error("Missing PCD segments. Exiting map loader...");
     }
-
     return pcd_metadata_dict;
   }
 

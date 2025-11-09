@@ -30,7 +30,47 @@ DifferentialMapLoaderModule::DifferentialMapLoaderModule(
     std::bind(
       &DifferentialMapLoaderModule::on_service_get_differential_point_cloud_map, this,
       std::placeholders::_1, std::placeholders::_2));
+
+  get_differential_pcd_paths_service_ = node->create_service<GetNewDifferentialPaths>(
+    "service/get_differential_pcd_paths",
+    std::bind(
+      &DifferentialMapLoaderModule::on_service_get_differential_point_cloud_paths, this,
+      std::placeholders::_1, std::placeholders::_2));
 }
+
+bool DifferentialMapLoaderModule::on_service_get_differential_point_cloud_paths(
+  GetNewDifferentialPaths::Request::SharedPtr req,
+  GetNewDifferentialPaths::Response::SharedPtr res) const
+{
+  auto area = req->area;
+  differential_paths_load(area, res);
+  res->header.frame_id = "map";
+  RCLCPP_INFO(logger_, "差分地图路径加载");
+  return true;
+}
+
+void DifferentialMapLoaderModule::differential_paths_load(
+  const autoware_map_msgs::msg::AreaInfo & area_info,
+  const GetNewDifferentialPaths::Response::SharedPtr & response) const
+{
+  // iterate over all the available pcd map grids
+  for (const auto & ele : all_pcd_file_metadata_dict_) {
+    std::string path = ele.first;
+    PCDFileMetadata metadata = ele.second;
+
+    // assume that the map ID = map path (for now)
+    const std::string & map_id = path;
+
+    // skip if the pcd file is not within the queried area
+    if (!is_grid_within_queried_area(area_info, metadata)){
+      continue;
+    }else{
+      response->new_paths.push_back(map_id);
+    } 
+  }
+  response->header.stamp = rclcpp::Clock().now();
+}
+
 
 void DifferentialMapLoaderModule::differential_area_load(
   const autoware_map_msgs::msg::AreaInfo & area_info, const std::vector<std::string> & cached_ids,
@@ -78,6 +118,7 @@ bool DifferentialMapLoaderModule::on_service_get_differential_point_cloud_map(
   std::vector<std::string> cached_ids = req->cached_ids;
   differential_area_load(area, cached_ids, res);
   res->header.frame_id = "map";
+  RCLCPP_INFO(logger_, "差分地图加载");
   return true;
 }
 

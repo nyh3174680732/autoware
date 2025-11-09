@@ -19,7 +19,7 @@
 #include "partial_map_loader_module.hpp"
 #include "pointcloud_map_loader_module.hpp"
 #include "selected_map_loader_module.hpp"
-
+#include "update_partial_map_module.hpp"
 #include <rclcpp/rclcpp.hpp>
 
 #include <pcl/common/common.h>
@@ -46,6 +46,8 @@ private:
   std::unique_ptr<PartialMapLoaderModule> partial_map_loader_;
   std::unique_ptr<DifferentialMapLoaderModule> differential_map_loader_;
   std::unique_ptr<SelectedMapLoaderModule> selected_map_loader_;
+  std::unique_ptr<UpdatePartialMap> update_partial_map_;
+
 
   std::vector<std::string> get_pcd_paths(
     const std::vector<std::string> & pcd_paths_or_directory) const;
