@@ -43,9 +43,16 @@ bool DifferentialMapLoaderModule::on_service_get_differential_point_cloud_paths(
   GetNewDifferentialPaths::Response::SharedPtr res) const
 {
   auto area = req->area;
+  RCLCPP_INFO(logger_, "收到的参数为:x=%f,y=%f,r=%f",area.center_x,area.center_y,area.radius);
+  auto start_time = std::chrono::steady_clock::now();
+  
   differential_paths_load(area, res);
   res->header.frame_id = "map";
-  RCLCPP_INFO(logger_, "差分地图路径加载");
+
+  auto end_time = std::chrono::steady_clock::now();
+  RCLCPP_INFO(logger_, "差分地图路径加载完成，耗时: %f秒", std::chrono::duration<double>(end_time - start_time).count());
+
+
   return true;
 }
 

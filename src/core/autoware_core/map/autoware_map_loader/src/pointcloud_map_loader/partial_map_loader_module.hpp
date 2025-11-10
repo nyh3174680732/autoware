@@ -49,11 +49,8 @@ private:
   rclcpp::Service<GetPartialPointCloudMap>::SharedPtr get_partial_pcd_maps_service_;
 
   // 新增发布器
-  rclcpp::Publisher<sensor_msgs::msg::PointCloud2>::SharedPtr partial_map_pub_;
-  void timer_callback();
-  rclcpp::TimerBase::SharedPtr timer_;
-  mutable sensor_msgs::msg::PointCloud2 cached_pcd_;  // 缓存最新的点云
-  mutable bool has_data_;  // 标记是否有数据
+  // rclcpp::Publisher<sensor_msgs::msg::PointCloud2>::SharedPtr partial_map_pub_;
+  // mutable sensor_msgs::msg::PointCloud2 cached_pcd_;  // 缓存最新的点云
 
 
   [[nodiscard]] bool on_service_get_partial_point_cloud_map(

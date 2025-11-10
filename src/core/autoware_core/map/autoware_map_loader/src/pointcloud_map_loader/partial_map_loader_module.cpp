@@ -31,27 +31,19 @@ PartialMapLoaderModule::PartialMapLoaderModule(
       std::placeholders::_2));
 
   // 创建发布器
-  partial_map_pub_ = node->create_publisher<sensor_msgs::msg::PointCloud2>(
-    "output/partial_pointcloud_map",
-    rclcpp::QoS(1).transient_local());
+  // partial_map_pub_ = node->create_publisher<sensor_msgs::msg::PointCloud2>(
+  //   "output/partial_pointcloud_map",
+  //   rclcpp::QoS(1).transient_local());
 
   // timer_ = node->create_wall_timer(
   //   std::chrono::milliseconds(100),
   //   std::bind(&PartialMapLoaderModule::timer_callback, this));
     
-  RCLCPP_INFO(logger_, "✅ Partial map loader module initialized");
-  RCLCPP_INFO(logger_, "   📡 Publishing to: /map/partial_pointcloud_map");
-  RCLCPP_INFO(logger_, "   🔧 Service available: service/get_partial_pcd_map");
+  // RCLCPP_INFO(logger_, "✅ Partial map loader module initialized");
+  // RCLCPP_INFO(logger_, "   📡 Publishing to: /map/partial_pointcloud_map");
+  // RCLCPP_INFO(logger_, "   🔧 Service available: service/get_partial_pcd_map");
 }
 
-void PartialMapLoaderModule::timer_callback()
-{
-  if (has_data_) {
-    // 更新时间戳
-    cached_pcd_.header.stamp = rclcpp::Clock().now();
-    partial_map_pub_->publish(cached_pcd_);
-  }
-}
 
 void PartialMapLoaderModule::partial_area_load( //区域加载函数
   const autoware_map_msgs::msg::AreaInfo & area,
@@ -87,20 +79,20 @@ bool PartialMapLoaderModule::on_service_get_partial_point_cloud_map(
   partial_area_load(area, res);
   res->header.frame_id = "map";
 
-  std::vector<std::string> pcd_paths;
-  // 合并所有点云并发布
-  if(!res->new_pointcloud_with_ids.empty()) {
-    for (const auto & cell : res->new_pointcloud_with_ids) {
-      pcd_paths.push_back(cell.cell_id);
-      RCLCPP_INFO(logger_, "分开加载的地图路径是: %s", cell.cell_id.c_str());
-    }
-    // ✅ 更新缓存的点云数据
-    cached_pcd_ = load_pcd_files(pcd_paths);
-    cached_pcd_.header.frame_id = "map";
-    cached_pcd_.header.stamp = rclcpp::Clock().now();
+  // std::vector<std::string> pcd_paths;
+  // // 合并所有点云并发布
+  // if(!res->new_pointcloud_with_ids.empty()) {
+  //   for (const auto & cell : res->new_pointcloud_with_ids) {
+  //     pcd_paths.push_back(cell.cell_id);
+  //     RCLCPP_INFO(logger_, "分开加载的地图路径是: %s", cell.cell_id.c_str());
+  //   }
+  //   // ✅ 更新缓存的点云数据
+  //   cached_pcd_ = load_pcd_files(pcd_paths);
+  //   cached_pcd_.header.frame_id = "map";
+  //   cached_pcd_.header.stamp = rclcpp::Clock().now();
 
-    partial_map_pub_->publish(cached_pcd_);
-  }
+  //   partial_map_pub_->publish(cached_pcd_);
+  // }
   return true;
 }
 

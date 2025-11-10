@@ -26,7 +26,8 @@
         <param name="pcd_metadata_path" value="$(var pointcloud_map_metadata_path)"/>
         <!-- <remap from="output/pointcloud_map" to="pointcloud_map"/> -->
         <remap from="output/pointcloud_map_metadata" to="pointcloud_map_metadata"/>
-        <remap from="output/partial_pointcloud_map" to="pointcloud_map"/>
+        <!-- <remap from="output/partial_pointcloud_map" to="pointcloud_map"/> -->
+        <remap from="output/differential_pointcloud_map" to="pointcloud_map"/>
         <remap from="service/get_partial_pcd_map" to="/map/get_partial_pointcloud_map"/>
         <remap from="service/get_differential_pcd_map" to="/map/get_differential_pointcloud_map"/>
         <remap from="service/get_differential_pcd_paths" to="/map/get_differential_pointcloud_paths"/>
