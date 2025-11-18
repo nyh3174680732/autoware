@@ -1,6 +1,6 @@
 /**:
   ros__parameters:
-    max_vel: 1.39           #  必须是小数 max velocity limit [m/s] 最大速度限制
+    max_vel: 2.0           #  必须是小数 max velocity limit [m/s] 最大速度限制
 
     # constraints param for normal driving
     normal:

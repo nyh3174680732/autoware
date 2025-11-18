@@ -7,7 +7,7 @@
     <xacro:include filename="$(find imu_description)/urdf/imu.xacro"/>
 
     <xacro:arg name="gpu" default="false"/>s
-    <xacro:arg name="config_dir" default="$(find sample_sensor_kit_description)/config"/>
+    <xacro:arg name="config_dir" default="$(find yunle_sensor_kit_description)/config"/>
 
     <xacro:property name="sensor_kit_base_link" default="sensor_kit_base_link"/>
 
@@ -34,7 +34,7 @@
              ${calibration['sensor_kit_base_link']['velodyne_top_base_link']['yaw']}"
       />
     </xacro:VLS-128>
-    <!-- <xacro:VLP-16 parent="sensor_kit_base_link" name="velodyne_left" topic="/points_raw" hz="10" samples="220" gpu="$(arg gpu)">
+    <xacro:VLP-16 parent="sensor_kit_base_link" name="velodyne_left" topic="/points_raw" hz="10" samples="220" gpu="$(arg gpu)">
       <origin
         xyz="${calibration['sensor_kit_base_link']['velodyne_left_base_link']['x']}
              ${calibration['sensor_kit_base_link']['velodyne_left_base_link']['y']}
@@ -53,10 +53,10 @@
              ${calibration['sensor_kit_base_link']['velodyne_right_base_link']['pitch']}
              ${calibration['sensor_kit_base_link']['velodyne_right_base_link']['yaw']}"
       />
-    </xacro:VLP-16> -->
+    </xacro:VLP-16>
 
     <!-- camera -->
-    <!-- <xacro:monocular_camera_macro
+    <xacro:monocular_camera_macro
       name="traffic_light_right_camera/camera"
       parent="sensor_kit_base_link"
       namespace=""
@@ -86,7 +86,7 @@
       height="400"
       fov="1.3"
     />
-    <xacro:monocular_camera_macro
+    <!--<xacro:monocular_camera_macro
       name="camera0/camera"
       parent="sensor_kit_base_link"
       namespace=""

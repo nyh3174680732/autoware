@@ -56,7 +56,7 @@
 
     validation:
       # Tolerance of timestamp difference between initial_pose and sensor pointcloud. [sec]
-      initial_pose_timeout_sec: 1.0
+      initial_pose_timeout_sec: 5.0
 
       # Tolerance of distance difference between two initial poses used for linear interpolation. [m]
       initial_pose_distance_tolerance_m: 10.0

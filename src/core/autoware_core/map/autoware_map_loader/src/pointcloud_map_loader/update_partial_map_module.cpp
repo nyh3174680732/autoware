@@ -44,7 +44,7 @@ void UpdatePartialMap::kinematics_callback(const autoware_adapi_v1_msgs::msg::Ve
                     msg->pose.header.frame_id.c_str());
     }
     
-    RCLCPP_INFO(logger_, "车辆位置更新: x=%.2f, y=%.2f", vehicle_x_, vehicle_y_);
+    // RCLCPP_INFO(logger_, "车辆位置更新: x=%.2f, y=%.2f", vehicle_x_, vehicle_y_);
 }
 
 void UpdatePartialMap::send_request()
@@ -66,15 +66,15 @@ void UpdatePartialMap::send_request()
     auto callback = [this](rclcpp::Client<GetNewDifferentialPaths>::SharedFuture future) {
         try {
             auto response = future.get();
-            RCLCPP_INFO(logger_, "请求成功，获取到响应");
+            //RCLCPP_INFO(logger_, "请求成功，获取到响应");
             // 处理响应数据
             if (response->new_paths.empty()) {
                 RCLCPP_INFO(logger_, "没有新的地图路径");
             } else {
                 std::vector<std::string> pcd_paths;
-                RCLCPP_INFO(logger_, "成功加载 %zu 个新的地图路径", response->new_paths.size());
+                //RCLCPP_INFO(logger_, "成功加载 %zu 个新的地图路径", response->new_paths.size());
                 for (const auto &path : response->new_paths) {
-                    RCLCPP_INFO(logger_, "加载地图路径: %s", path.c_str());
+                    //RCLCPP_INFO(logger_, "加载地图路径: %s", path.c_str());
                     pcd_paths.push_back(path);
                 }
                 differential_pcd_ = load_pcd_files(pcd_paths);
