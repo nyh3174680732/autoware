@@ -32,3 +32,4 @@ capture/
 
 # Node.js
 node_modules/
+*.deb
