@@ -6,12 +6,12 @@
   <arg name="input_steering" default="/vehicle/status/steering_status"/>
   <arg name="input_actuation_status" default="/vehicle/status/actuation_status"/>
   <arg name="output_actuation_cmd" default="/control/command/actuation_cmd"/>
-  <arg name="output_steering_status" default="/vehicle/status/steering_status"/>
+  <arg name="output_steering_status" default="/vehicle/status/steering_status"/> <!--控制模块读取 不发布(由车辆驱动发布)-->
   <!-- Parameter -->
   <arg name="config_file" default="$(find-pkg-share yunle_vehicle_launch)/config/raw_vehicle_cmd_converter/raw_vehicle_cmd_converter.param.yaml"/>
-
+  <!--启动车辆控制命令转换节点，将Autoware的高层控制命令转换为底层车辆执行命令-->
   <node pkg="autoware_raw_vehicle_cmd_converter" exec="autoware_raw_vehicle_cmd_converter_node" name="raw_vehicle_cmd_converter" output="screen">
-    <param from="$(var config_file)" allow_substs="true"/>
+    <param from="$(var config_file)" allow_substs="true"/> <!--true时参数文件中可以使用替换语法-->
     <remap from="~/input/control_cmd" to="$(var input_control_cmd)"/>
     <remap from="~/input/odometry" to="$(var input_odometry)"/>
     <remap from="~/input/steering" to="$(var input_steering)"/>

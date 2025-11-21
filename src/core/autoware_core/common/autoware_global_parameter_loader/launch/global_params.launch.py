@@ -27,11 +27,11 @@ def launch_setup(context, *args, **kwargs):
     set_use_sim_time = SetParameter(name="use_sim_time", value=LaunchConfiguration("use_sim_time"))
 
     # vehicle_info
-    vehicle_description_pkg = FindPackageShare(
+    vehicle_description_pkg = FindPackageShare(   #查找ROS2包的安装共享目录
         [LaunchConfiguration("vehicle_model"), "_description"]
-    ).perform(context)
+    ).perform(context) #context解析配置，返回包的绝对路径字符串
 
-    load_vehicle_info = IncludeLaunchDescription(
+    load_vehicle_info = IncludeLaunchDescription( #包含(嵌套)另一个launch 文件
         PythonLaunchDescriptionSource(
             [FindPackageShare("autoware_vehicle_info_utils"), "/launch/vehicle_info.launch.py"]
         ),

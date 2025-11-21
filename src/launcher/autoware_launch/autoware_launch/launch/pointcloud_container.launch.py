@@ -21,37 +21,37 @@ from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import ComposableNodeContainer
 from launch_ros.descriptions import ComposableNode
 
-
+#创建了一个可组合节点容器
 def generate_launch_description():
     def add_launch_arg(name: str, default_value=None):
         return DeclareLaunchArgument(name, default_value=default_value)
-
+    #条件设置容器类型（单线程）
     set_container_executable = SetLaunchConfiguration(
-        "container_executable",
-        "component_container",
-        condition=UnlessCondition(LaunchConfiguration("use_multithread")),
+        "container_executable", #变量名
+        "component_container", #单线程容器可执行文件名
+        condition=UnlessCondition(LaunchConfiguration("use_multithread")), #如果use_multithread为false则使用单线程容器
     )
-
+    #条件设置容器类型（多线程）
     set_container_mt_executable = SetLaunchConfiguration(
-        "container_executable",
-        "component_container_mt",
-        condition=IfCondition(LaunchConfiguration("use_multithread")),
+        "container_executable", #变量名
+        "component_container_mt", #多线程容器可执行文件名
+        condition=IfCondition(LaunchConfiguration("use_multithread")), #如果use_multithread为true则使用多线程容器
     )
-
-    glog_component = ComposableNode(
-        package="autoware_glog_component",
-        plugin="autoware::glog_component::GlogComponent",
-        name="glog_component",
-        namespace="pointcloud_container",
+    #定义glog组件节点
+    glog_component = ComposableNode( #可组合节点（可以加载到容器中的节点）
+        package="autoware_glog_component", #组件所在的包
+        plugin="autoware::glog_component::GlogComponent", #组件的插件名称
+        name="glog_component",#组件节点名称
+        namespace="pointcloud_container",#组件节点命名空间
     )
-
-    pointcloud_container = ComposableNodeContainer(
-        name=LaunchConfiguration("container_name"),
-        namespace="/",
-        package="rclcpp_components",
-        executable=LaunchConfiguration("container_executable"),
-        composable_node_descriptions=[glog_component],
-        output="both",
+    #定义可组合节点容器
+    pointcloud_container = ComposableNodeContainer(#创建一个可组合节点容器
+        name=LaunchConfiguration("container_name"),#容器名称
+        namespace="/",#容器命名空间
+        package="rclcpp_components",#ROS2组件系统包
+        executable=LaunchConfiguration("container_executable"),#容器可执行文件（单线程或多线程）
+        composable_node_descriptions=[glog_component],#初始加载的组件列表
+        output="both",#输出到终端和日志文件
     )
 
     return LaunchDescription(

@@ -30,4 +30,19 @@
     vgr_coef_a: 15.713
     vgr_coef_b: 0.053
     vgr_coef_c: 0.042
-    convert_actuation_to_steering_status: false
+    convert_actuation_to_steering_status: false  # 是否将控制命令转换为转向状态发布出去
+    #模式1 (false): 只有input生效，车辆驱动发布steering_status
+    # 车辆驱动 --发布--> /vehicle/status/steering_status
+    #                       ↓
+    #             raw_vehicle_cmd_converter (订阅，用于PID反馈)
+
+    #             不发布 output/steering_status
+    # input_steering: ✅ 订阅，用于转向PID控制的反馈
+    # output_steering_status: ❌ 不发布（虽然配置了但不生效）
+    
+    #模式2 (true): output生效，converter 自己估算并发布steering_status
+    # raw_vehicle_cmd_converter 
+    #   ↓ (根据 actuation_cmd 估算)
+    #   发布--> /vehicle/status/steering_status
+    #   ↓
+    #   自己又订阅回来用于PID
