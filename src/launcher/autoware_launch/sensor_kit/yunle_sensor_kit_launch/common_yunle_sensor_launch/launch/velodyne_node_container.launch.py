@@ -96,7 +96,7 @@ def launch_setup(context, *args, **kwargs):
             plugin="autoware::pointcloud_preprocessor::CropBoxFilterComponent",
             name="crop_box_filter_self",
             remappings=[
-                ("input", "pointcloud_raw_ex"),
+                ("input", "pointcloud_raw_ex"),  # 使用相对路径，根据命名空间自动订阅 top/left/right
                 ("output", "self_cropped/pointcloud_ex"),
             ],
             parameters=[cropbox_parameters],
@@ -125,37 +125,51 @@ def launch_setup(context, *args, **kwargs):
             extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
         )
     )
-    nodes.append(
-        ComposableNode(
-            package="autoware_pointcloud_preprocessor",
-            plugin="autoware::pointcloud_preprocessor::DistortionCorrectorComponent",
-            name="distortion_corrector_node",
-            remappings=[
-                ("~/input/twist", "/sensing/vehicle_velocity_converter/twist_with_covariance"),
-                ("~/input/imu", "/sensing/imu/imu_data"),
-                ("~/input/pointcloud", "mirror_cropped/pointcloud_ex"),
-                ("~/output/pointcloud", "rectified/pointcloud_ex"),
-            ],
-            parameters=[distortion_corrector_node_param],
-            extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
-        )
-    )
+    # DistortionCorrector - Livox MID360 已内置畸变校正，可选择性启用
+    # 如果需要启用，取消下面的注释
+    # nodes.append(
+    #     ComposableNode(
+    #         package="autoware_pointcloud_preprocessor",
+    #         plugin="autoware::pointcloud_preprocessor::DistortionCorrectorComponent",
+    #         name="distortion_corrector_node",
+    #         remappings=[
+    #             ("~/input/twist", "/sensing/vehicle_velocity_converter/twist_with_covariance"),
+    #             ("~/input/imu", "/sensing/imu/imu_data"),
+    #             ("~/input/pointcloud", "mirror_cropped/pointcloud_ex"),
+    #             ("~/output/pointcloud", "rectified/pointcloud_ex"),
+    #         ],
+    #         parameters=[distortion_corrector_node_param],
+    #         extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
+    #     )
+    # )
 
-    # Ring Outlier Filter is the last component in the pipeline, so control the output frame here
-    # if LaunchConfiguration("output_as_sensor_frame").perform(context).lower() == "true":
-    #     ring_outlier_output_frame = {"output_frame": LaunchConfiguration("frame_id")}
-    # else:
-    #     ring_outlier_output_frame = {"output_frame": ""}  # keep the output frame as the input frame
+    # RingOutlierFilter - 仅适用于旋转式激光雷达(Velodyne)，Livox固态雷达不需要
+    # 如果需要启用，取消下面的注释
+    # nodes.append(
+    #     ComposableNode(
+    #         package="autoware_pointcloud_preprocessor",
+    #         plugin="autoware::pointcloud_preprocessor::RingOutlierFilterComponent",
+    #         name="ring_outlier_filter",
+    #         remappings=[
+    #             ("input", "rectified/pointcloud_ex"),
+    #             ("output", "pointcloud_before_sync"),
+    #         ],
+    #         parameters=[ring_outlier_filter_node_param],
+    #         extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
+    #     )
+    # )
+
+    # Livox 直接输出到 pointcloud_before_sync (跳过 DistortionCorrector 和 RingOutlierFilter)
     nodes.append(
         ComposableNode(
             package="autoware_pointcloud_preprocessor",
-            plugin="autoware::pointcloud_preprocessor::RingOutlierFilterComponent",
-            name="ring_outlier_filter",
+            plugin="autoware::pointcloud_preprocessor::CropBoxFilterComponent",
+            name="passthrough_filter",
             remappings=[
-                ("input", "rectified/pointcloud_ex"),
+                ("input", "mirror_cropped/pointcloud_ex"),
                 ("output", "pointcloud_before_sync"),
             ],
-            parameters=[ring_outlier_filter_node_param],
+            parameters=[cropbox_parameters],
             extra_arguments=[{"use_intra_process_comms": LaunchConfiguration("use_intra_process")}],
         )
     )

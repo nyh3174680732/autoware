@@ -25,36 +25,20 @@
       </include>
     </group>
 
+    <!-- Left LiDAR - 接收来自 pointcloud_converter 的点云 -->
     <group>
       <push-ros-namespace namespace="left"/>
       <include file="$(find-pkg-share common_yunle_sensor_launch)/launch/velodyne_lidar.launch.xml">
-        <!-- <arg name="max_range" value="5.0"/>
-        <arg name="sensor_frame" value="velodyne_left"/>
-        <arg name="sensor_ip" value="192.168.1.202"/>
-        <arg name="host_ip" value="$(var host_ip)"/>
-        <arg name="data_port" value="2369"/>
-        <arg name="scan_phase" value="180.0"/>
-        <arg name="cloud_min_angle" value="300"/>
-        <arg name="cloud_max_angle" value="60"/>
-        <arg name="launch_driver" value="$(var launch_driver)"/> -->
         <arg name="vehicle_mirror_param_file" value="$(var vehicle_mirror_param_file)"/>
         <arg name="use_distortion_corrector" value="$(var use_distortion_corrector)"/>
         <arg name="container_name" value="pointcloud_container"/>
       </include>
     </group>
 
+    <!-- Right LiDAR - 接收来自 pointcloud_converter 的点云 -->
     <group>
       <push-ros-namespace namespace="right"/>
       <include file="$(find-pkg-share common_yunle_sensor_launch)/launch/velodyne_lidar.launch.xml">
-        <!-- <arg name="max_range" value="5.0"/>
-        <arg name="sensor_frame" value="velodyne_right"/>
-        <arg name="sensor_ip" value="192.168.1.203"/>
-        <arg name="host_ip" value="$(var host_ip)"/>
-        <arg name="data_port" value="2370"/>
-        <arg name="scan_phase" value="180.0"/>
-        <arg name="cloud_min_angle" value="300"/>
-        <arg name="cloud_max_angle" value="60"/>
-        <arg name="launch_driver" value="$(var launch_driver)"/> -->
         <arg name="vehicle_mirror_param_file" value="$(var vehicle_mirror_param_file)"/>
         <arg name="use_distortion_corrector" value="$(var use_distortion_corrector)"/>
         <arg name="container_name" value="pointcloud_container"/>

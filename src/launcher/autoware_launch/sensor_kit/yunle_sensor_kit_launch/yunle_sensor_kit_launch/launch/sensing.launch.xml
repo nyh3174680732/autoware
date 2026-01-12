@@ -32,9 +32,9 @@
 
 
     <!-- GNSS Driver -->
-    <!-- <include file="$(find-pkg-share sample_sensor_kit_launch)/launch/gnss.launch.xml">
-      <arg name="launch_driver" value="$(var launch_driver)"/>
-    </include> -->
+    <include file="$(find-pkg-share yunle_sensor_kit_launch)/launch/gnss.launch.xml">
+      <arg name="launch_driver" value="false"/>
+    </include>
 
     <!-- Vehicle Velocity Converter  -->
     <include file="$(find-pkg-share autoware_vehicle_velocity_converter)/launch/vehicle_velocity_converter.launch.xml">
