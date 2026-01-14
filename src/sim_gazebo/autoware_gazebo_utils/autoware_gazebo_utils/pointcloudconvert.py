@@ -102,10 +102,10 @@ class RawToRawEx(Node):
     def __init__(self):
         super().__init__('raw_to_raw_ex')
 
-        # 话题列表ss
+        # 话题列表
         self.topics = [
             ('/sensing/lidar/top/pointcloud_raw', '/sensing/lidar/top/pointcloud_raw_ex'),
-            ('/sensing/lidar/top/pointcloud_raw', '/sensing/lidar/left/pointcloud_raw_ex'),
+            ('/sensing/lidar/left/pointcloud_raw', '/sensing/lidar/left/pointcloud_raw_ex'),
             ('/sensing/lidar/top/pointcloud_raw', '/sensing/lidar/right/pointcloud_raw_ex'),
         ]
 
@@ -125,15 +125,33 @@ class RawToRawEx(Node):
     def make_callback(self, pub_topic):
         def callback(msg):
             points = []
+            # 根据字段名检测是否有 time 字段
+            field_names = [f.name for f in msg.fields]
+            has_time_field = 'time' in field_names or 'timestamp' in field_names
+
             for i in range(msg.width):
                 offset = i * msg.point_step
-                # x, y, z, intensity, ring, time
+                # x, y, z, intensity 是通用的
                 x = struct.unpack_from('f', msg.data, offset + 0)[0]
                 y = struct.unpack_from('f', msg.data, offset + 4)[0]
                 z = struct.unpack_from('f', msg.data, offset + 8)[0]
                 intensity = struct.unpack_from('f', msg.data, offset + 12)[0]
-                ring = struct.unpack_from('I', msg.data, offset + 16)[0]
-                time = struct.unpack_from('f', msg.data, offset + 18)[0]
+
+                # ring/index 字段
+                if msg.point_step >= 20:
+                    ring = struct.unpack_from('I', msg.data, offset + 16)[0]
+                else:
+                    ring = 0
+
+                # time 字段 - 只有当 point_step 足够大且有 time 字段时才读取
+                if has_time_field and msg.point_step >= 24:
+                    time = struct.unpack_from('f', msg.data, offset + 20)[0]
+                else:
+                    time = 0.0
+
+                # 跳过无效点 (NaN)
+                if np.isnan(x) or np.isnan(y) or np.isnan(z):
+                    continue
 
                 # 扩展字段
                 distance = np.sqrt(x**2 + y**2 + z**2)
@@ -141,9 +159,13 @@ class RawToRawEx(Node):
                 elevation = np.arctan2(z, np.sqrt(x**2 + y**2))
                 return_type = 0
 
-                intensity_uint8 = int(intensity) if intensity >= 0 else 0
+                intensity_uint8 = int(intensity) if not np.isnan(intensity) and intensity >= 0 else 0
                 intensity_uint8 = max(0, min(intensity_uint8, 255))
                 channel_uint16 = ring & 0xFFFF
+
+                # 处理 time 为 NaN 的情况
+                if np.isnan(time):
+                    time = 0.0
                 time_stamp_uint32 = int(time * 1e6) & 0xFFFFFFFF
 
                 point = struct.pack('<fffBBHfffI',
@@ -174,7 +196,7 @@ class RawToRawEx(Node):
             new_msg = PointCloud2()
             new_msg.header = msg.header
             new_msg.height = 1
-            new_msg.width = msg.width
+            new_msg.width = len(points)  # 使用有效点的数量
             new_msg.fields = fields
             new_msg.is_bigendian = False
             new_msg.point_step = 32

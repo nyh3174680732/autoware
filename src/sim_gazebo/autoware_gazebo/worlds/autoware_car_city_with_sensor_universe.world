@@ -28238,7 +28238,7 @@
         </axis>
       </joint>
       <link name='laser_link'>
-        <pose relative_to='chassis'>0 -2.3 0.6 0 0 -1.58</pose>
+        <pose relative_to='chassis'>0 -2.3 0.6 0 0 0</pose>
         <sensor name='front_laser_sensor' type='ray'>
           <always_on>0</always_on>
           <visualize>0</visualize>
@@ -28534,7 +28534,7 @@
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
       </link>
-      <joint name='velodyne_left_joint' type='fixed'>
+      <!-- <joint name='velodyne_left_joint' type='fixed'>
         <parent>chassis</parent>
         <child>velodyne_left_link</child>
         <pose>0 0 0 0 0 0</pose>
@@ -28665,7 +28665,7 @@
             <gaussian_noise>0.008</gaussian_noise>
           </plugin>
         </sensor>
-      </link>
+      </link> -->
       <joint name="base_link_joint" type="fixed">
         <parent>base_link</parent>
         <child>chassis</child>

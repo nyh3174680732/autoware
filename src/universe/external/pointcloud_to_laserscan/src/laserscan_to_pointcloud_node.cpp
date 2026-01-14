@@ -69,7 +69,7 @@ LaserScanToPointCloudNode::LaserScanToPointCloudNode(const rclcpp::NodeOptions &
   input_queue_size_ = this->declare_parameter(
     "queue_size", static_cast<int>(std::thread::hardware_concurrency()));
 
-  pub_ = this->create_publisher<sensor_msgs::msg::PointCloud2>("cloud", rclcpp::SensorDataQoS());
+  pub_ = this->create_publisher<sensor_msgs::msg::PointCloud2>("cloud", rclcpp::QoS(10).reliable());
 
   using std::placeholders::_1;
   // if pointcloud target frame specified, we need to filter by transform availability

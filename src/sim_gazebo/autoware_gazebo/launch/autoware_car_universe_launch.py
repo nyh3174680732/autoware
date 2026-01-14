@@ -63,7 +63,32 @@ def generate_launch_description():
             parameters=[{'use_sim_time': use_sim_time , "robot_description":Command(["xacro", " ", urdf])}],
             # arguments=[urdf]
         )
-    
+
+    # LaserScan to PointCloud2 转换节点 (单线雷达 -> 点云)
+    laserscan_to_pointcloud = Node(
+        package='pointcloud_to_laserscan',
+        executable='laserscan_to_pointcloud_node',
+        name='laserscan_to_pointcloud',
+        parameters=[{
+            'use_sim_time': use_sim_time,
+            'target_frame': 'velodyne_left_base_link',  # 输出点云的 frame_id
+            'transform_tolerance': 0.01,
+        }],
+        remappings=[
+            ('scan_in', '/sensing/lidar/front/scan'),
+            ('cloud', '/sensing/lidar/left/pointcloud_raw'),
+        ],
+    )
+
+    # 静态 TF: velodyne_left_base_link -> laser_link (让 laser_link 成为 velodyne_left_base_link 的子 frame)
+    static_tf_laser_to_velodyne_left = Node(
+        package='tf2_ros',
+        executable='static_transform_publisher',
+        name='static_tf_laser_to_velodyne_left',
+        arguments=['0', '0', '0', '0', '0', '0', 'velodyne_left_base_link', 'laser_link'],
+        parameters=[{'use_sim_time': use_sim_time}],
+    )
+
     return LaunchDescription([
         DeclareLaunchArgument(
             'use_sim_time',
@@ -82,6 +107,8 @@ def generate_launch_description():
         ),
 
         gazebo,
+        laserscan_to_pointcloud,
+        static_tf_laser_to_velodyne_left,
         # robot_state_publisher,
         # rviz
     ])
