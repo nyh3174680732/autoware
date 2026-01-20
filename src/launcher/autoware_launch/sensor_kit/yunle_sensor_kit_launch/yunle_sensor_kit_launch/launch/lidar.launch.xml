@@ -2,7 +2,7 @@
   <arg name="launch_driver" default="true"/>
   <arg name="host_ip" default="192.168.1.10"/>
   <arg name="vehicle_id" default="$(env VEHICLE_ID default)"/>
-  <arg name="use_concat_filter" default="true"/>
+  <arg name="use_concat_filter" default="false"/>
   <arg name="vehicle_mirror_param_file"/>
   <arg name="pointcloud_container_name" default="pointcloud_container"/>
   <arg name="use_distortion_corrector" default="true"/>
@@ -67,7 +67,14 @@
       <arg name="base_frame" value="base_link"/>
       <arg name="use_intra_process" value="true"/>
       <arg name="use_multithread" value="true"/>
+      <arg name="use_concat_filter" value="$(var use_concat_filter)"/>
       <arg name="pointcloud_container_name" value="$(var pointcloud_container_name)"/>
     </include>
+
+
+    <!-- 当不使用concatenate时，使用passthrough节点 -->
+    <group unless="$(var use_concat_filter)">
+      <include file="$(find-pkg-share yunle_sensor_kit_launch)/launch/single_lidar_passthrough.launch.xml"/>
+    </group>
   </group>
 </launch>

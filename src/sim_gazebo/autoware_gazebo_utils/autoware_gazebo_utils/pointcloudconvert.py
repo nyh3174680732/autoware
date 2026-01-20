@@ -105,8 +105,8 @@ class RawToRawEx(Node):
         # 话题列表
         self.topics = [
             ('/sensing/lidar/top/pointcloud_raw', '/sensing/lidar/top/pointcloud_raw_ex'),
-            ('/sensing/lidar/left/pointcloud_raw', '/sensing/lidar/left/pointcloud_raw_ex'),
-            ('/sensing/lidar/top/pointcloud_raw', '/sensing/lidar/right/pointcloud_raw_ex'),
+            # ('/sensing/lidar/left/pointcloud_raw', '/sensing/lidar/left/pointcloud_raw_ex'),
+            # ('/sensing/lidar/top/pointcloud_raw', '/sensing/lidar/right/pointcloud_raw_ex'),
         ]
 
         # 为每个话题创建订阅和发布器

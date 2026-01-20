@@ -1,18 +1,18 @@
 /**:
   ros__parameters:
-    map_length: 150.0     # [m]
-    map_resolution: 0.5 # [m]
+    map_length: 100.0     # [m]生成的局部栅格地图的边长
+    map_resolution: 0.3 # [m]每个栅格（Grid/Pixel）代表的实际物理尺寸
 
-    height_filter:
+    height_filter: #高度过滤器 只保留高度在-1.0米到2.0米之间的点云数据用于生成障碍物
       use_height_filter: true
       min_height: -1.0
       max_height: 2.0
 
-    # downsample input pointcloud
+    # downsample input pointcloud 是否对输入的点云进行降采样
     downsample_input_pointcloud: false
     downsample_voxel_size: 0.125 # [m]
 
-    enable_single_frame_mode: false
+    enable_single_frame_mode: false #地图会累积历史数据（通常用于构建局部地图） 
     # use sensor pointcloud to filter obstacle pointcloud
     filter_obstacle_pointcloud_by_raw_pointcloud: false
 
@@ -27,7 +27,7 @@
 
     grid_map_type: "OccupancyGridMapFixedBlindSpot"
     OccupancyGridMapFixedBlindSpot:
-      distance_margin: 1.0
+      distance_margin: 0.3 #在障碍物周围保留1.0米的边距，或者指在车辆周围一定范围内不进行某些处理
     OccupancyGridMapProjectiveBlindSpot:
       projection_dz_threshold: 0.01 # [m] for avoiding null division
       obstacle_separation_threshold: 1.0 # [m] fill the interval between obstacles with unknown for this length

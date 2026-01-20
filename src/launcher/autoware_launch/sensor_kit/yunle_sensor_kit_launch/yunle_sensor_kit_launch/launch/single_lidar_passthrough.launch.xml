@@ -1,0 +1,8 @@
+<launch>
+  <!-- Single Lidar Passthrough Node -->
+  <!-- 将单个雷达的点云直接转发到concatenated topic，跳过concatenate组件 -->
+  <node pkg="topic_tools" exec="relay" name="single_lidar_relay" output="screen">
+    <param name="input_topic" value="/sensing/lidar/top/pointcloud_before_sync"/>
+    <param name="output_topic" value="/sensing/lidar/concatenated/pointcloud"/>
+  </node>
+</launch>
