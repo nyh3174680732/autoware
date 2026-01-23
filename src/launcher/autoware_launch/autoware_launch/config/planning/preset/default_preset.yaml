@@ -64,7 +64,7 @@ launch:
       default: "false"
   - arg:
       name: launch_detection_area_module # 是否启用检测区域模块
-      default: "true"
+      default: "false"
   - arg:
       name: launch_virtual_traffic_light_module # 是否启用虚拟交通信号灯模块
       default: "false"
@@ -101,7 +101,7 @@ launch:
       #         path_sampler 路径采样器
       #         none
 
-  # motion velocity planner modules
+  # motion velocity planner modules 运动速度规划模块
   - arg:
       name: launch_obstacle_stop_module # 是否启用障碍物停车模块
       default: "true"
@@ -165,3 +165,6 @@ launch:
   - arg:
       name: launch_remaining_distance_time_calculator
       default: "true"
+
+
+# preset - 模块预设配置: 控制整个规划系统中哪些模块被启用或禁用，相当于规划系统的"总开关"

@@ -3,16 +3,16 @@
     csv_path_accel_map: $(find-pkg-share yunle_vehicle_launch)/data/accel_map.csv
     csv_path_brake_map: $(find-pkg-share yunle_vehicle_launch)/data/brake_map.csv
     csv_path_steer_map: $(find-pkg-share yunle_vehicle_launch)/data/steer_map.csv
-    convert_accel_cmd: true
-    convert_brake_cmd: true
+    convert_accel_cmd: false
+    convert_brake_cmd: false
     convert_steer_cmd: false
     use_steer_ff: true
     use_steer_fb: true
     is_debugging: false
     max_throttle: 0.4
     max_brake: 0.8
-    max_steer: 10.0
-    min_steer: -10.0
+    max_steer: 40.0
+    min_steer: -40.0
     steer_pid:
       kp: 150.0
       ki: 15.0

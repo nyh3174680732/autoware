@@ -11,3 +11,10 @@
     consider_no_drivable_lanes: true # 是否考虑不可驾驶车道 This flag is for considering no_drivable_lanes in planning or not.
     check_footprint_inside_lanes: true
     allow_reroute_in_autonomous_mode: true #是否允许在自动驾驶模式下进行路径重新规划
+
+
+# mission_planning 任务规划配置: 负责全局路径规划，从起点到终点的整体路线规划
+#  - 在lanelet地图上规划从起点到终点的路线
+#  - 判断是否到达目标点
+#  - 决定何时需要重新规划路径
+#  - 检查车辆是否在可行驶车道内
