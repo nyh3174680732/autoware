@@ -10,7 +10,7 @@
       # "current_lane"           : use only current lane. this module doesn't use adjacent lane to avoid object.
       # "same_direction_lane"    : this module uses same direction lane to avoid object if need.
       # "opposite_direction_lane": this module uses both same direction and opposite direction lane.
-      use_lane_type: "opposite_direction_lane"
+      use_lane_type: "current_lane"
       # drivable area setting
       use_intersection_areas: true
       use_hatched_road_markings: true
@@ -20,7 +20,7 @@
       target_object:
         car:
           th_moving_speed: 1.0                          # [m/s]
-          th_moving_time: 2.0                           # [s]
+          th_moving_time: 3.0                           # [s]
           longitudinal_margin: 0.0                      # [m]
           lateral_margin:
             soft_margin: 0.5                            # [m]
@@ -67,8 +67,8 @@
           th_moving_time: 1.0
           longitudinal_margin: 0.0
           lateral_margin:
-            soft_margin: 0.5
-            hard_margin: -0.2
+            soft_margin: 0.2
+            hard_margin: 0.1
             hard_margin_for_parked_vehicle: -0.2
           max_expand_ratio: 0.0
           envelope_buffer_margin: 0.1
@@ -130,7 +130,7 @@
         # detection area generation parameters
         detection_area:
           static: false                                 # [-]
-          min_forward_distance: 50.0                    # [m]
+          min_forward_distance: 20.0                    # [m]
           max_forward_distance: 150.0                   # [m]
           backward_distance: 10.0                       # [m]
 
@@ -324,7 +324,7 @@
       #                      so that the path can be within drivable area. This method is able to deal with complex avoidance scenario.
       #                      However, user can't control avoidance manuever execution.
       # "both"             : Use both method.
-      path_generation_method: "shift_line_base"
+      path_generation_method: "both"
 
       shift_line_pipeline:
         trim:

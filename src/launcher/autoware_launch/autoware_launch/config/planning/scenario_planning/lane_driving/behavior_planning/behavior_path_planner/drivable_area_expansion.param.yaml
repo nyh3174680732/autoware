@@ -1,15 +1,15 @@
 /**:
   ros__parameters:
     # Static expansion
-    drivable_area_right_bound_offset: 0.0 # 可行驶区域右边界的偏移量 
-    drivable_area_left_bound_offset: 0.0 # 可行驶区域左边界的偏移量
+    drivable_area_right_bound_offset: 1.0 # 可行驶区域右边界的偏移量 
+    drivable_area_left_bound_offset: 1.0 # 可行驶区域左边界的偏移量
     drivable_area_types_to_skip: [road_border] # 在可行驶区域扩展时需要跳过的边界类型
 
     # Dynamic expansion by using the path curvature 根据车辆路径的曲率（curvature）动态调整可行驶区域
     dynamic_expansion:
       enabled: true # 系统会根据路径曲率动态调整可行驶区域
       print_runtime: false # 是否打印动态扩展的运行时信息
-      max_expansion_distance: 0.0 # [m] maximum distance by which the drivable area can be expanded (0.0 means no limit)
+      max_expansion_distance: 2.0 # [m] maximum distance by which the drivable area can be expanded (0.0 means no limit)
       min_bound_interval: 1.0  # [m] minimum interval between two consecutive bound points (before expansion)
       smoothing:
         curvature_average_window: 3  # window size used for smoothing the curvatures using a moving window average

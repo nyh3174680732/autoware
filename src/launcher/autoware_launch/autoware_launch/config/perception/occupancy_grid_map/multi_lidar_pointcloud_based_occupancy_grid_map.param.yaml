@@ -8,7 +8,7 @@
         # center of the grid map
         gridmap_origin_frame: "base_link"
 
-        map_resolution: 0.5 # [m]
+        map_resolution: 0.1 # [m]
         map_length_x: 150.0 # [m]
         map_length_y: 150.0 # [m]
 
@@ -59,4 +59,4 @@
 
       # Setting2: tune ogm fusion parameters
       ## choose fusion method from ["overwrite", "log-odds", "dempster-shafer"]
-        fusion_method: "overwrite"
+        fusion_method: "log-odds"

@@ -30,8 +30,8 @@
       maximum_longitudinal_deviation: 1.0 # Note, should be the same or less than planning validator's "longitudinal_distance_deviation"
       lateral_jerk: 0.5
       lateral_acceleration_sampling_num: 3
-      minimum_lateral_acc: 0.15
-      maximum_lateral_acc: 0.5
+      minimum_lateral_acc: 0.6  # Increased from 0.3 to 0.6 to avoid acc limit warnings
+      maximum_lateral_acc: 1.0  # Increased from 0.5 to match normal driving limits
       maximum_curvature: 0.07
       end_pose_curvature_threshold: 0.1
       # geometric pull out

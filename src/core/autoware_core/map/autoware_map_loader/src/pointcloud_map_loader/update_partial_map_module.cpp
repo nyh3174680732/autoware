@@ -61,7 +61,7 @@ void UpdatePartialMap::send_request()
     // 使用当前车辆位置替换固定值
     request->area.center_x = static_cast<float>(vehicle_x_);
     request->area.center_y = static_cast<float>(vehicle_y_);
-    request->area.radius = 30.0f;  // 查询半径 30 米
+    request->area.radius = 100.0f;  // 
 
     auto callback = [this](rclcpp::Client<GetNewDifferentialPaths>::SharedFuture future) {
         try {
